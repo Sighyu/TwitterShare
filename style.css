@@ -1,0 +1,325 @@
+.vc-twitter-share-modal {
+    max-width: 760px;
+}
+
+.vc-twitter-share-title {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.vc-twitter-share-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    padding: 0 var(--space-16) var(--space-16);
+}
+
+.vc-twitter-share-load-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-8);
+    align-items: center;
+}
+
+.vc-twitter-share-button-content {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    white-space: nowrap;
+}
+
+.vc-twitter-share-status {
+    border: 1px solid var(--border-subtle);
+    border-left-width: 3px;
+    border-radius: var(--radius-sm);
+    padding: var(--space-10) var(--space-12);
+}
+
+.vc-twitter-share-status-info {
+    background: var(--background-feedback-info);
+}
+
+.vc-twitter-share-status-success {
+    background: var(--background-feedback-positive);
+}
+
+.vc-twitter-share-status-warning {
+    background: var(--background-feedback-warning);
+}
+
+.vc-twitter-share-status-error {
+    background: var(--background-feedback-critical);
+    border-color: var(--border-feedback-critical);
+}
+
+.vc-twitter-share-status ul {
+    margin: var(--space-8) 0 0;
+    padding-left: var(--space-20);
+    color: var(--text-subtle);
+    font-size: 13px;
+}
+
+.vc-twitter-share-tweet-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: var(--space-12);
+    background: var(--background-surface-high);
+}
+
+.vc-twitter-share-author {
+    color: var(--text-subtle);
+    font-weight: var(--font-weight-normal);
+}
+
+.vc-twitter-share-tweet-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.vc-twitter-share-switches {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.vc-twitter-share-switches .vc-form-switch {
+    padding: var(--space-12);
+}
+
+.vc-twitter-share-switches .vc-form-switch-container:last-child .vc-form-switch {
+    border-bottom: 0;
+}
+
+.vc-twitter-share-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+}
+
+.vc-twitter-share-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+}
+
+.vc-twitter-share-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--space-10);
+}
+
+.vc-twitter-share-media-item {
+    display: grid;
+    grid-template-rows: 120px auto;
+    position: relative;
+    overflow: hidden;
+    min-height: 206px;
+    cursor: pointer;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--background-surface-high);
+    transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.vc-twitter-share-media-item:hover {
+    border-color: var(--border-normal);
+    background: var(--background-surface-higher);
+}
+
+.vc-twitter-share-media-item:focus-within {
+    border-color: var(--control-primary-border-default);
+}
+
+.vc-twitter-share-media-selected {
+    border-color: var(--control-primary-border-default);
+    background: var(--background-mod-subtle);
+}
+
+.vc-twitter-share-media-item input[type="checkbox"] {
+    position: absolute;
+    z-index: 2;
+    top: var(--space-8);
+    left: var(--space-8);
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--brand-500);
+}
+
+.vc-twitter-share-preview-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+    height: 120px;
+    background: var(--background-base-low);
+}
+
+.vc-twitter-share-preview-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vc-twitter-share-preview-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--text-subtle);
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+}
+
+.vc-twitter-share-media-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+    padding: var(--space-10);
+}
+
+.vc-twitter-share-media-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-6);
+    min-width: 0;
+}
+
+.vc-twitter-share-media-details {
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.vc-twitter-share-media-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xs);
+    padding: 0 var(--space-6);
+    background: var(--background-base-low);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    line-height: 18px;
+    text-transform: uppercase;
+}
+
+.vc-twitter-share-media-badge-warning {
+    background: var(--background-feedback-warning);
+    color: var(--text-default);
+}
+
+.vc-twitter-share-footer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+}
+
+.vc-twitter-share-size-meter {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-width: 240px;
+}
+
+.vc-twitter-share-size-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+}
+
+.vc-twitter-share-progress {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.6fr;
+    overflow: hidden;
+    height: 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    background: var(--background-base-low);
+}
+
+.vc-twitter-share-progress-segment {
+    position: relative;
+    overflow: hidden;
+    background: var(--background-base-low);
+}
+
+.vc-twitter-share-progress-segment:not(:last-child) {
+    border-right: 1px solid var(--border-subtle);
+}
+
+.vc-twitter-share-progress-segment span {
+    display: block;
+    height: 100%;
+    transition: width 160ms ease;
+}
+
+.vc-twitter-share-progress-free span {
+    background: linear-gradient(90deg, var(--green-360, #3ba55d), var(--green-330, #43b581));
+}
+
+.vc-twitter-share-progress-basic span {
+    background: linear-gradient(90deg, var(--yellow-300, #f0b232), var(--orange-330, #faa61a));
+}
+
+.vc-twitter-share-progress-nitro span {
+    background: linear-gradient(90deg, var(--brand-500, #5865f2), var(--blue-345, #00a8fc));
+}
+
+.vc-twitter-share-tier-labels {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1.6fr;
+    gap: var(--space-8);
+}
+
+.vc-twitter-share-tier-labels > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.vc-twitter-share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-8);
+}
+
+@media (width <= 620px) {
+    .vc-twitter-share-load-row,
+    .vc-twitter-share-footer {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vc-twitter-share-actions {
+        justify-content: stretch;
+    }
+
+    .vc-twitter-share-size-meter {
+        min-width: 0;
+    }
+
+    .vc-twitter-share-actions button {
+        width: 100%;
+    }
+}
