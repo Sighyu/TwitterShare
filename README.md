@@ -10,7 +10,7 @@ Share Twitter/X media in Discord through the FxTwitter API.
 
 ```sh
 cd src/userplugins
-git clone <repo url>
+git clone https://github.com/Sighyu/TwitterShare.git
 cd ../..
 pnpm build
 ```
