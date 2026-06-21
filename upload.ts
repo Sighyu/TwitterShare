@@ -170,9 +170,17 @@ export function formatBytes(bytes: number) {
 }
 
 export function buildCaption(tweet: FxTwitterTweet, includeCaption: boolean, includeTweetLink: boolean) {
-    const tweetText = getTweetText(tweet);
-    const quotedText = includeCaption && tweetText
-        ? tweetText.includes("\n") ? `>>> ${tweetText}` : `> ${tweetText}`
+    const trimmedTweetText = getTweetText(tweet).trim();
+    const withoutWrappingQuotes = trimmedTweetText.length >= 2
+        && trimmedTweetText.startsWith("\"")
+        && trimmedTweetText.endsWith("\"")
+        ? trimmedTweetText.slice(1, -1).trim()
+        : trimmedTweetText;
+    const quotedText = includeCaption && withoutWrappingQuotes
+        ? withoutWrappingQuotes
+            .split(/\r?\n/)
+            .map(line => `> ${line.trim()}`)
+            .join("\n")
         : "";
     const suppressedEmbedUrl = includeTweetLink && tweet.url?.trim() ? `<${tweet.url.trim()}>` : "";
     const parts = [quotedText, suppressedEmbedUrl].filter(Boolean);
