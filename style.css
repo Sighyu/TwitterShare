@@ -79,6 +79,9 @@
 .vc-twitter-share-tweet-text {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: var(--space-4);
 }
 
 .vc-twitter-share-switches {

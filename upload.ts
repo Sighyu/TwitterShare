@@ -25,6 +25,8 @@ const URL_EXTENSION_REGEX = /\.([a-z0-9]+)$/i;
 const FXTWITTER_GIF_HOST = "gif.fxtwitter.com";
 const TWEET_VIDEO_PATH_SEGMENT = "/tweet_video/";
 const logger = new Logger("TwitterShare", "#1da1f2");
+const MAX_CAPTION_LINES = 12;
+const MAX_CAPTION_CHARS = 2000;
 
 export interface MediaUploadMeta {
     filename: string;
@@ -176,11 +178,22 @@ export function buildCaption(tweet: FxTwitterTweet, includeCaption: boolean, inc
         && trimmedTweetText.endsWith("\"")
         ? trimmedTweetText.slice(1, -1).trim()
         : trimmedTweetText;
+
+    const truncatedCaptionText = withoutWrappingQuotes
+        .split(/\r?\n/)
+        .slice(0, MAX_CAPTION_LINES)
+        .join("\n")
+        .slice(0, MAX_CAPTION_CHARS)
+        .trim();
+
+    const captionWasTruncated = withoutWrappingQuotes.length > truncatedCaptionText.length
+        || withoutWrappingQuotes.split(/\r?\n/).length > MAX_CAPTION_LINES;
+
     const quotedText = includeCaption && withoutWrappingQuotes
-        ? withoutWrappingQuotes
+        ? truncatedCaptionText
             .split(/\r?\n/)
             .map(line => `> ${line.trim()}`)
-            .join("\n")
+            .join("\n") + (captionWasTruncated ? "\n> ..." : "")
         : "";
     const suppressedEmbedUrl = includeTweetLink && tweet.url?.trim() ? `<${tweet.url.trim()}>` : "";
     const parts = [quotedText, suppressedEmbedUrl].filter(Boolean);
