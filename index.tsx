@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ChatBarButton } from "@api/ChatButtons";
+import type { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { CloudUploadIcon } from "@components/Icons";
 import { openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
+import { Menu } from "@webpack/common";
 
 import ShareModal from "./components/ShareModal";
 import { settings } from "./settings";
@@ -17,19 +18,20 @@ function openTwitterShareModal() {
     openModal(props => <ShareModal {...props} />);
 }
 
-function TwitterShareChatButton(props) {
-    if (!props.isMainChat) return null;
+const channelAttachMenuPatch: NavContextMenuPatchCallback = (children, props) => {
+    if (!props.channel) return;
 
-    return (
-        <ChatBarButton
-            tooltip="Share Twitter/X media"
-            onClick={openTwitterShareModal}
-            buttonProps={{ "aria-haspopup": "dialog" }}
-        >
-            <CloudUploadIcon width={24} height={24} />
-        </ChatBarButton>
+    if (children.some(child => child?.props?.id === "vc-twitter-share")) return;
+
+    children.push(
+        <Menu.MenuItem
+            id="vc-twitter-share"
+            label="Share Twitter/X media"
+            iconLeft={CloudUploadIcon}
+            action={openTwitterShareModal}
+        />
     );
-}
+};
 
 export default definePlugin({
     name: "TwitterShare",
@@ -39,9 +41,8 @@ export default definePlugin({
     managedStyle,
     tags: ["Chat", "Media"],
 
-    chatBarButton: {
-        icon: CloudUploadIcon,
-        render: TwitterShareChatButton,
+    contextMenus: {
+        "channel-attach": channelAttachMenuPatch,
     },
 
     toolboxActions: {
