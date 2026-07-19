@@ -8,6 +8,7 @@ import { BaseText } from "@components/BaseText";
 import { Button } from "@components/Button";
 import { FormSwitch } from "@components/FormSwitch";
 import { CloudUploadIcon, LinkIcon } from "@components/Icons";
+import { readClipboard } from "@utils/clipboard";
 import { ModalCloseButton as LegacyModalCloseButton, ModalContent as LegacyModalContent, ModalFooter as LegacyModalFooter, ModalHeader as LegacyModalHeader, ModalRoot as LegacyModalRoot, ModalSize } from "@utils/modal";
 import { RenderModalProps } from "@vencord/discord-types";
 import { React, showToast, TextInput, Toasts } from "@webpack/common";
@@ -90,6 +91,8 @@ export default function ShareModal(props: RenderModalProps) {
     const [status, setStatus] = React.useState<ModalStatus | null>(null);
     const requestIdRef = React.useRef(0);
     const objectUrlsRef = React.useRef(new Set<string>());
+    const hasUserEditedInputRef = React.useRef(false);
+    const hasReadClipboardRef = React.useRef(false);
 
     const selectedItems = React.useMemo(() => items.filter(item => item.selected), [items]);
     const knownSelectedBytes = React.useMemo(() => getKnownSelectedBytes(items), [items]);
@@ -151,8 +154,8 @@ export default function ShareModal(props: RenderModalProps) {
         for (const item of mediaItems) void hydrateMediaItem(item, requestId);
     }, [hydrateMediaItem]);
 
-    const handleLoad = React.useCallback(async () => {
-        const parsed = parseTweetUrl(inputUrl);
+    const loadTweetFromUrl = React.useCallback(async (url: string) => {
+        const parsed = parseTweetUrl(url);
         if (!parsed) {
             setStatus({ kind: "error", message: "Paste a valid Twitter/X status URL." });
             return;
@@ -194,7 +197,35 @@ export default function ShareModal(props: RenderModalProps) {
         } finally {
             if (requestIdRef.current === requestId) setLoading(false);
         }
-    }, [hydrateMediaItems, inputUrl, preferredLanguage, revokeObjectUrls]);
+    }, [hydrateMediaItems, preferredLanguage, revokeObjectUrls]);
+
+    const handleLoad = React.useCallback(async () => {
+        await loadTweetFromUrl(inputUrl);
+    }, [inputUrl, loadTweetFromUrl]);
+
+    React.useEffect(() => {
+        if (hasReadClipboardRef.current) return;
+        hasReadClipboardRef.current = true;
+
+        let cancelled = false;
+
+        void (async () => {
+            try {
+                const clipboardText = await readClipboard();
+                const parsed = parseTweetUrl(clipboardText);
+                if (cancelled || hasUserEditedInputRef.current || !parsed) return;
+
+                setInputUrl(parsed.sourceUrl);
+                await loadTweetFromUrl(parsed.sourceUrl);
+            } catch {
+                return;
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [loadTweetFromUrl]);
 
     const toggleItem = React.useCallback((id: string) => {
         setItems(current => current.map(item => item.id === id ? { ...item, selected: !item.selected } : item));
@@ -273,7 +304,10 @@ export default function ShareModal(props: RenderModalProps) {
                 <div className="vc-twitter-share-load-row">
                     <TextInput
                         value={inputUrl}
-                        onChange={setInputUrl}
+                        onChange={value => {
+                            hasUserEditedInputRef.current = true;
+                            setInputUrl(value);
+                        }}
                         placeholder="https://x.com/user/status/1890000000000000000"
                         disabled={loading || uploading}
                     />
